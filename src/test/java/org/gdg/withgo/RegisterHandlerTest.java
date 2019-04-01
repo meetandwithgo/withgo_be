@@ -6,6 +6,7 @@ import org.gdg.withgo.model.account.RegisterRequest;
 import org.gdg.withgo.service.Postgresql;
 import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.sql.Connection;
@@ -16,8 +17,7 @@ import static org.mockito.Mockito.*;
 
 public class RegisterHandlerTest {
 
-    @Test
-    public void registerHandlerTest(){
+    private Context getContextMock(){
         Context contextMock = mock(Context.class);
         LambdaLogger loggerMock = mock(LambdaLogger.class);
         when(contextMock.getLogger()).thenReturn(loggerMock);
@@ -25,6 +25,12 @@ public class RegisterHandlerTest {
             System.out.println(invocation.getArguments()[0]);
             return null;
         }).when(loggerMock).log(anyString());
+        return contextMock;
+    }
+
+    @Test
+    public void registerHandlerTest(){
+        Context contextMock = getContextMock();
         RegisterRequest request = new RegisterRequest();
         RegisterHandler handler = new RegisterHandler();
         request.setEmail("boxfoxsg619@gmail.com");
@@ -35,6 +41,19 @@ public class RegisterHandlerTest {
         Assert.assertTrue(res);
     }
 
+    @Test
+    public void invalidRequestTest(){
+        Context contextMock = getContextMock();
+        RegisterRequest request = new RegisterRequest();
+        RegisterHandler handler = new RegisterHandler();
+        request.setEmail("boxfoxsg619@gmail.com");
+        request.setName("boxfox");
+        request.setPassword("");
+        boolean res = handler.handleRequest(request, contextMock);
+        Assert.assertFalse(res);
+    }
+
+    @Before
     @After
     public void clear(){
         try(Connection connection = Postgresql.create()){

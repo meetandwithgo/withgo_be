@@ -1,6 +1,8 @@
 package org.gdg.withgo.model.account;
 
-public class RegisterRequest {
+import org.gdg.withgo.model.Model;
+
+public class RegisterRequest extends Model {
     private String email;
     private String name;
     private String phone;
@@ -36,5 +38,13 @@ public class RegisterRequest {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public void assertFields() {
+        valid(email, "Email not found");
+        valid(name, "Name not found");
+        valid(phone, "Phone not found");
+        valid(password, "Password not found");
     }
 }

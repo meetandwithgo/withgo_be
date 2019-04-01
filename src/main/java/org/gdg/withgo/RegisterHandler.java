@@ -11,7 +11,9 @@ public class RegisterHandler implements RequestHandler<RegisterRequest, Boolean>
 
     public Boolean handleRequest(RegisterRequest input, Context context){
         context.getLogger().log("Input : "+ input);
+
         try(Connection connection = Postgresql.create()) {
+            input.assertFields();
             PreparedStatement stmt = connection.prepareStatement("select count(*) from account where phone=? OR email=?");
             stmt.setString(1, input.getPhone());
             stmt.setString(2, input.getEmail());
@@ -32,6 +34,8 @@ public class RegisterHandler implements RequestHandler<RegisterRequest, Boolean>
             if(res == 1){
                 return true;
             }
+        } catch (AssertionError e){
+            context.getLogger().log(e.getMessage());
         } catch (SQLException e) {
             context.getLogger().log(e.getSQLState());
         }
