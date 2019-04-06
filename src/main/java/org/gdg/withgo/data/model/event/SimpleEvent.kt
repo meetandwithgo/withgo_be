@@ -1,7 +1,9 @@
 package org.gdg.withgo.data.model.event
 
-class Event(
+open class SimpleEvent(
+        val id: Int,
         val title: String,
-        val content: String
-) {
-}
+        val thumbnail: String,
+        val startDate: String,
+        val owner: String
+)

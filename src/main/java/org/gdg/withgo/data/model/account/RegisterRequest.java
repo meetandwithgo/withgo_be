@@ -1,6 +1,6 @@
-package org.gdg.withgo.model.account;
+package org.gdg.withgo.data.model.account;
 
-import org.gdg.withgo.model.Model;
+import org.gdg.withgo.data.model.Model;
 
 public class RegisterRequest extends Model {
     private String email;
