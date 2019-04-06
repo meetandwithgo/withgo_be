@@ -1,8 +1,8 @@
-package org.gdg.withgo;
+package org.gdg.withgo.handler.account;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import org.gdg.withgo.model.account.LoginRequest;
+import org.gdg.withgo.data.model.account.LoginRequest;
 import org.gdg.withgo.service.Postgresql;
 
 import java.sql.Connection;
@@ -14,6 +14,8 @@ public class LoginHandler implements RequestHandler<LoginRequest, Boolean> {
 
     @Override
     public Boolean handleRequest(LoginRequest input, Context context) {
+        context.getLogger().log("Login : "+ input);
+
         try(Connection connection = Postgresql.create()) {
             input.assertFields();
             PreparedStatement stmt = connection.prepareStatement("select count(*) from account where email=? AND password=?");

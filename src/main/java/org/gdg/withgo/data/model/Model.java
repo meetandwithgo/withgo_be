@@ -1,4 +1,4 @@
-package org.gdg.withgo.model;
+package org.gdg.withgo.data.model;
 
 import com.sun.tools.javac.util.Assert;
 

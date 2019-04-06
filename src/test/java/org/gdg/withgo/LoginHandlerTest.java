@@ -2,8 +2,10 @@ package org.gdg.withgo;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
-import org.gdg.withgo.model.account.LoginRequest;
-import org.gdg.withgo.model.account.RegisterRequest;
+import org.gdg.withgo.handler.account.LoginHandler;
+import org.gdg.withgo.handler.account.RegisterHandler;
+import org.gdg.withgo.data.model.account.LoginRequest;
+import org.gdg.withgo.data.model.account.RegisterRequest;
 import org.gdg.withgo.service.Postgresql;
 import org.junit.After;
 import org.junit.Assert;

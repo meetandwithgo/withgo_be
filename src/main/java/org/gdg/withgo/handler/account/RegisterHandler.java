@@ -1,8 +1,8 @@
-package org.gdg.withgo;
+package org.gdg.withgo.handler.account;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import org.gdg.withgo.model.account.RegisterRequest;
+import org.gdg.withgo.data.model.account.RegisterRequest;
 import org.gdg.withgo.service.Postgresql;
 
 import java.sql.*;
@@ -10,7 +10,7 @@ import java.sql.*;
 public class RegisterHandler implements RequestHandler<RegisterRequest, Boolean> {
 
     public Boolean handleRequest(RegisterRequest input, Context context){
-        context.getLogger().log("Input : "+ input);
+        context.getLogger().log("Register : "+ input);
 
         try(Connection connection = Postgresql.create()) {
             input.assertFields();
