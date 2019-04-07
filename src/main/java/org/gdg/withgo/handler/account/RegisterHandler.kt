@@ -4,6 +4,7 @@ import com.amazonaws.services.lambda.runtime.Context
 import com.amazonaws.services.lambda.runtime.RequestHandler
 import org.gdg.withgo.data.model.account.RegisterRequest
 import org.gdg.withgo.data.repository.postgre.AuthRepository
+import java.lang.AssertionError
 
 class RegisterHandler : RequestHandler<RegisterRequest, Boolean> {
 
@@ -16,14 +17,15 @@ class RegisterHandler : RequestHandler<RegisterRequest, Boolean> {
             input.assertFields()
             val throwable = authRepository.register(input.email, input.name, input.password, input.phone).blockingGet()
             if (throwable != null) {
-                context.logger.log(throwable.message)
-                false
-            } else {
-                context.logger.log("Login success")
-                true
+                throw throwable
             }
+            context.logger.log("Login success")
+            true
         } catch (e: AssertionError) {
-            context.logger.log(e.message)
+            context.logger.log("assert error ${e.message}")
+            false
+        } catch (e: Throwable) {
+            context.logger.log("error occuard ${e.message}")
             false
         }
     }

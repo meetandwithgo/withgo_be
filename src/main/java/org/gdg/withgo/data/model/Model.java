@@ -1,14 +1,14 @@
 package org.gdg.withgo.data.model;
 
-import com.sun.tools.javac.util.Assert;
 
 public abstract class Model {
 
     public abstract void assertFields() throws IllegalArgumentException;
 
     protected void valid(String str, String msg){
-        Assert.checkNonNull(str, msg);
-        Assert.check(!str.isEmpty(), msg);
+        if(str == null || str.isEmpty()){
+            throw new AssertionError();
+        }
     }
 
 }

@@ -5,6 +5,7 @@ import com.amazonaws.services.lambda.runtime.RequestHandler
 import org.gdg.withgo.data.model.account.LoginRequest
 import org.gdg.withgo.data.repository.postgre.AuthRepository
 import org.gdg.withgo.service.Postgresql
+import java.lang.AssertionError
 
 import java.sql.Connection
 import java.sql.PreparedStatement
@@ -21,14 +22,15 @@ class LoginHandler : RequestHandler<LoginRequest, Boolean> {
             input.assertFields()
             val throwable = authRepository.login(input.email, input.password).blockingGet()
             if (throwable != null) {
-                context.logger.log(throwable.message)
-                false
-            } else {
-                context.logger.log("Login success")
-                true
+                throw throwable
             }
+            context.logger.log("Login success")
+            true
         } catch (e: AssertionError) {
-            context.logger.log(e.message)
+            context.logger.log("assert error ${e.message}")
+            false
+        } catch (e: Throwable) {
+            context.logger.log("error occuard ${e.message}")
             false
         }
     }
