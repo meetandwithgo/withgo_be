@@ -5,8 +5,10 @@ import io.reactivex.Single
 import org.gdg.withgo.data.model.organization.Organization
 
 interface OrganizationUsecase {
-    fun add(email: String, name: String): Single<Organization>
+    fun add(uid: Int, name: String): Single<Organization>
+    fun addMember(id: Int, uid: Int): Completable
     fun remove(id: Int): Completable
-    fun load(email: String): Single<List<Organization>>
+    fun load(uid: Int): Single<List<Organization>>
     fun rename(id: Int, name: String): Completable
+    fun removeMember(id: Int, uid: Int): Completable
 }
