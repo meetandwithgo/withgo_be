@@ -1,4 +1,4 @@
-package org.gdg.withgo.data.repository.postgre
+package org.gdg.withgo.data.repository.postgres
 
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -6,7 +6,6 @@ import org.gdg.withgo.data.model.account.Applicant
 import org.gdg.withgo.data.model.event.Event
 import org.gdg.withgo.data.model.event.SimpleEvent
 import org.gdg.withgo.data.model.event.Ticket
-import org.gdg.withgo.data.model.organization.Organization
 import org.gdg.withgo.domain.EventUsecase
 import org.gdg.withgo.service.Postgresql
 import java.sql.SQLException

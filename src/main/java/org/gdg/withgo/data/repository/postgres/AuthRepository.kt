@@ -1,4 +1,4 @@
-package org.gdg.withgo.data.repository.postgre
+package org.gdg.withgo.data.repository.postgres
 
 import io.reactivex.Completable
 import io.reactivex.Single

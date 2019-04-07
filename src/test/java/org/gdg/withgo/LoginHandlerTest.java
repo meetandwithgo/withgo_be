@@ -59,7 +59,7 @@ public class LoginHandlerTest {
 
     @After
     public void clear(){
-        try(Connection connection = Postgresql.create()){
+        try(Connection connection = Postgresql.INSTANCE.create()){
             PreparedStatement stmt = connection.prepareStatement("delete from account where email='boxfoxsg619@gmail.com'");
             stmt.executeUpdate();
         }catch (SQLException e){

@@ -3,14 +3,8 @@ package org.gdg.withgo.handler.account
 import com.amazonaws.services.lambda.runtime.Context
 import com.amazonaws.services.lambda.runtime.RequestHandler
 import org.gdg.withgo.data.model.account.LoginRequest
-import org.gdg.withgo.data.repository.postgre.AuthRepository
-import org.gdg.withgo.service.Postgresql
+import org.gdg.withgo.data.repository.postgres.AuthRepository
 import java.lang.AssertionError
-
-import java.sql.Connection
-import java.sql.PreparedStatement
-import java.sql.ResultSet
-import java.sql.SQLException
 
 class LoginHandler : RequestHandler<LoginRequest, Boolean> {
 
