@@ -62,8 +62,9 @@ class AuthRepository : AuthUsecase {
                 if (resultSet.next()) {
                     val count = resultSet.getInt(1)
                     count > 0
+                }else {
+                    false
                 }
-                false
             }
             if (status) {
                 it.onComplete()

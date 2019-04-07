@@ -15,7 +15,7 @@ class LoginHandler : RequestHandler<LoginRequest, Boolean> {
 
     private val authRepository: AuthRepository = AuthRepository()
 
-    override fun handleRequest(input: LoginRequest, context: Context): Boolean? {
+    override fun handleRequest(input: LoginRequest, context: Context): Boolean {
         context.logger.log("Login : $input")
         return try {
             input.assertFields()

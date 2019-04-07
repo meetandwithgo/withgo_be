@@ -9,7 +9,7 @@ class RegisterHandler : RequestHandler<RegisterRequest, Boolean> {
 
     private val authRepository: AuthRepository = AuthRepository()
 
-    override fun handleRequest(input: RegisterRequest, context: Context): Boolean? {
+    override fun handleRequest(input: RegisterRequest, context: Context): Boolean {
         context.logger.log("Register : $input")
 
         return try {
