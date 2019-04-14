@@ -70,8 +70,8 @@ class EventRepository(val ticketRepository: TicketUsecase = TicketRepository()) 
     override fun addEvent(ownerId: Int, event: Event): Single<Int> = Single.create {
         try {
             val eventId = Postgresql.dsl().use { dsl ->
-                val eventId = dsl.insertInto(EVENT, EVENT.TITLE, EVENT.THUMBNAIL, EVENT.CONTENT, EVENT.START_DATE, EVENT.END_DATE, EVENT.SALES_START, EVENT.SALES_END, EVENT.OWNER_ID)
-                        .values(event.title, event.thumbnail, event.content, Date(event.startDate.time), Date(event.endDate.time), Date(event.saleStartDate.time), Date(event.saleEndDate.time), ownerId)
+                val eventId = dsl.insertInto(EVENT, EVENT.TITLE, EVENT.THUMBNAIL, EVENT.PLACE, EVENT.CONTENT, EVENT.START_DATE, EVENT.END_DATE, EVENT.SALES_START, EVENT.SALES_END, EVENT.OWNER_ID)
+                        .values(event.title, event.thumbnail, event.place, event.content, Date(event.startDate.time), Date(event.endDate.time), Date(event.saleStartDate.time), Date(event.saleEndDate.time), ownerId)
                         .returningResult(EVENT.ID)
                         .fetchOne()
                         .get(EVENT.ID)
@@ -91,6 +91,7 @@ class EventRepository(val ticketRepository: TicketUsecase = TicketRepository()) 
                 val res = it.update(EVENT)
                         .set(EVENT.TITLE, event.title)
                         .set(EVENT.THUMBNAIL, event.thumbnail)
+                        .set(EVENT.PLACE, event.place)
                         .set(EVENT.CONTENT, event.content)
                         .set(EVENT.START_DATE, Date(event.startDate.time))
                         .set(EVENT.SALES_START, Date(event.saleStartDate.time))

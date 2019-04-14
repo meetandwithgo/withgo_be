@@ -9,6 +9,7 @@ object EventEntityMapper {
         this.id = record.get(Tables.EVENT.ID)
         this.title = record.get(Tables.EVENT.TITLE)
         this.thumbnail = record.get(Tables.EVENT.THUMBNAIL)
+        this.place = record.get(Tables.EVENT.PLACE)
         this.content = record.get(Tables.EVENT.CONTENT)
         this.startDate = record.get(Tables.EVENT.START_DATE)
         this.owner = record.get(Tables.ACCOUNT.NAME)
