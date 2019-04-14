@@ -7,7 +7,5 @@ import kotlin.collections.ArrayList
 class Event: SimpleEvent() {
     var content: String = ""
     var endDate: Date = Date()
-    var saleStartDate: Date = Date()
-    var saleEndDate: Date = Date()
     var tickets: List<Ticket> = ArrayList()
 }

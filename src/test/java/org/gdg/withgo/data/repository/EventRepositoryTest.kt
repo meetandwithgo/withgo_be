@@ -20,16 +20,16 @@ class EventRepositoryTest {
             this.description = "티켓 설명"
             this.max = 10
             this.price = 1000
+            this.saleStartDate = Date()
+            this.saleEndDate = Date()
         })
         Mockito.`when`(ticketRepository.getEventTickets(Mockito.anyInt())).thenReturn(Single.just(tickets))
         val event = Event().apply {
             this.title = "테스트 이벤트"
             this.content = "이벤트 내용"
             this.startDate = Date()
-            this.endDate = Date()
-            this.saleStartDate = Date()
-            this.saleEndDate = Date()
             this.tickets = tickets
+            this.endDate = Date()
         }
         val ownerId = 1
         val eventId = eventRepository.addEvent(ownerId, event).blockingGet()
