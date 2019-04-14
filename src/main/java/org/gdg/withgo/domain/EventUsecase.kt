@@ -8,10 +8,11 @@ import org.gdg.withgo.data.model.event.SimpleEvent
 import org.gdg.withgo.data.model.event.Ticket
 
 interface EventUsecase : Usecase {
-    fun loadEvents(page: Int, count: Int): Single<List<SimpleEvent>>
+    fun loadEvents(page: Int, count: Int): Single<List<Event>>
     fun loadEvent(id: Int): Single<Event>
-    fun loadOwnEvents(ownerId: Int): Single<List<SimpleEvent>>
+    fun loadOwnEvents(ownerId: Int): Single<List<Event>>
     fun addEvent(ownerId: Int, event: Event): Single<Int>
+    fun eventCount(): Single<Int>
     fun updateEvent(event: Event): Completable
     fun deleteEvent(id: Int): Completable
     fun checkOwn(email: String, id: Int): Single<Boolean>

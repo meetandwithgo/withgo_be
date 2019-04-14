@@ -8,4 +8,5 @@ open class SimpleEvent {
     var thumbnail: String = ""
     var startDate: Date = Date()
     var owner: String = ""
+    var place: String = ""
 }

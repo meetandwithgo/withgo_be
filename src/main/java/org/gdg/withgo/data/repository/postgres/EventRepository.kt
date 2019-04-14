@@ -17,12 +17,20 @@ import java.sql.Date
 import java.sql.SQLException
 
 class EventRepository(val ticketRepository: TicketUsecase = TicketRepository()) : EventUsecase {
+    override fun eventCount(): Single<Int> = Single.create {
+        try {
+            val count = Postgresql.dsl().use { dsl -> dsl.fetchCount(EVENT) }
+            it.onSuccess(count)
+        } catch (e: Throwable) {
+            it.onError(e)
+        }
+    }
 
-    override fun loadEvents(page: Int, count: Int): Single<List<SimpleEvent>> = Single.create {
+    override fun loadEvents(page: Int, count: Int): Single<List<Event>> = Single.create {
         try {
             val events = Postgresql.dsl().use { dsl ->
                 dsl.selectFrom(EVENT.join(ACCOUNT).on(EVENT.OWNER_ID.eq(ACCOUNT.ID))).fetch()
-                        .map { record -> SimpleEventEntityMapper.fromRecord(record) }
+                        .map { record -> EventEntityMapper.fromRecord(record) }
             }
             it.onSuccess(events)
         } catch (e: SQLException) {
@@ -30,13 +38,13 @@ class EventRepository(val ticketRepository: TicketUsecase = TicketRepository()) 
         }
     }
 
-    override fun loadOwnEvents(ownerId: Int): Single<List<SimpleEvent>> = Single.create {
+    override fun loadOwnEvents(ownerId: Int): Single<List<Event>> = Single.create {
         try {
             val events = Postgresql.dsl().use { dsl ->
                 dsl.selectFrom(EVENT.join(ACCOUNT).on(EVENT.OWNER_ID.eq(ACCOUNT.ID)))
                         .where(EVENT.OWNER_ID.eq(ownerId))
                         .fetch()
-                        .map { r -> SimpleEventEntityMapper.fromRecord(r) }
+                        .map { r -> EventEntityMapper.fromRecord(r) }
             }
             it.onSuccess(events)
         } catch (e: Throwable) {

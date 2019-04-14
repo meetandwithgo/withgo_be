@@ -1,3 +1,6 @@
 package org.gdg.withgo.data.model.event
 
-class EventSearchRequest(val page: Int, val count: Int)
+class EventSearchRequest{
+    var page: Int = 0
+    var count: Int = 10
+}
