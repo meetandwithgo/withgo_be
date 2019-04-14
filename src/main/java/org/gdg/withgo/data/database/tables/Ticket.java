@@ -4,6 +4,7 @@
 package org.gdg.withgo.data.database.tables;
 
 
+import java.sql.Date;
 import java.util.Arrays;
 import java.util.List;
 
@@ -40,7 +41,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Ticket extends TableImpl<TicketRecord> {
 
-    private static final long serialVersionUID = 2094654509;
+    private static final long serialVersionUID = 365377428;
 
     /**
      * The reference instance of <code>public.ticket</code>
@@ -84,6 +85,16 @@ public class Ticket extends TableImpl<TicketRecord> {
      * The column <code>public.ticket.price</code>.
      */
     public final TableField<TicketRecord, Integer> PRICE = createField("price", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+
+    /**
+     * The column <code>public.ticket.sales_start</code>.
+     */
+    public final TableField<TicketRecord, Date> SALES_START = createField("sales_start", org.jooq.impl.SQLDataType.DATE.nullable(false), this, "");
+
+    /**
+     * The column <code>public.ticket.sales_end</code>.
+     */
+    public final TableField<TicketRecord, Date> SALES_END = createField("sales_end", org.jooq.impl.SQLDataType.DATE.nullable(false), this, "");
 
     /**
      * Create a <code>public.ticket</code> table reference

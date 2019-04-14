@@ -14,7 +14,5 @@ object EventEntityMapper {
         this.startDate = record.get(Tables.EVENT.START_DATE)
         this.owner = record.get(Tables.ACCOUNT.NAME)
         this.endDate = record.get(Tables.EVENT.END_DATE)
-        this.saleStartDate = record.get(Tables.EVENT.SALES_START)
-        this.saleEndDate = record.get(Tables.EVENT.SALES_END)
     }
 }

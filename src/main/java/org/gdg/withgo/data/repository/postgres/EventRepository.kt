@@ -67,46 +67,49 @@ class EventRepository(val ticketRepository: TicketUsecase = TicketRepository()) 
         }
     }
 
-    override fun addEvent(ownerId: Int, event: Event): Single<Int> = Single.create {
+    override fun addEvent(ownerId: Int, event: Event): Single<Int> = Single.create { sub ->
         try {
             val eventId = Postgresql.dsl().use { dsl ->
-                val eventId = dsl.insertInto(EVENT, EVENT.TITLE, EVENT.THUMBNAIL, EVENT.PLACE, EVENT.CONTENT, EVENT.START_DATE, EVENT.END_DATE, EVENT.SALES_START, EVENT.SALES_END, EVENT.OWNER_ID)
-                        .values(event.title, event.thumbnail, event.place, event.content, Date(event.startDate.time), Date(event.endDate.time), Date(event.saleStartDate.time), Date(event.saleEndDate.time), ownerId)
+                val eventId = dsl.insertInto(EVENT, EVENT.TITLE, EVENT.THUMBNAIL, EVENT.PLACE, EVENT.CONTENT, EVENT.START_DATE, EVENT.END_DATE, EVENT.OWNER_ID)
+                        .values(event.title, event.thumbnail, event.place, event.content, Date(event.startDate.time), Date(event.endDate.time), ownerId)
                         .returningResult(EVENT.ID)
                         .fetchOne()
                         .get(EVENT.ID)
-                val query = dsl.insertInto(TICKET, TICKET.EVENT_ID, TICKET.NAME, TICKET.DESCRIPTION, TICKET.MAX, TICKET.PRICE)
-                event.tickets.forEach { query.values(eventId, it.name, it.description, it.max, it.price) }
                 eventId
             }
-            it.onSuccess(eventId)
+            eventId?.let {
+                ticketRepository.addTickets(it, event.tickets).blockingGet()?.let {
+                    this.deleteEvent(eventId)
+                    throw it
+                }
+                sub.onSuccess(eventId)
+            } ?: sub.onError(Throwable("Failed create event"))
         } catch (e: Throwable) {
-            it.onError(e)
+            sub.onError(e)
         }
     }
 
-    override fun updateEvent(event: Event) = Completable.create {
+    override fun updateEvent(event: Event) = Completable.create { sub ->
         try {
-            val res = Postgresql.dsl().use {
-                val res = it.update(EVENT)
+            val res = Postgresql.dsl().use { dsl ->
+                val res = dsl.update(EVENT)
                         .set(EVENT.TITLE, event.title)
                         .set(EVENT.THUMBNAIL, event.thumbnail)
                         .set(EVENT.PLACE, event.place)
                         .set(EVENT.CONTENT, event.content)
                         .set(EVENT.START_DATE, Date(event.startDate.time))
-                        .set(EVENT.SALES_START, Date(event.saleStartDate.time))
-                        .set(EVENT.SALES_END, Date(event.saleEndDate.time))
                         .where(EVENT.ID.eq(event.id))
                         .execute()
                 res > 0
             }
             if (res) {
-                it.onComplete()
+                ticketRepository.updateTickets(event.id, event.tickets).blockingGet()?.let { throw it }
+                sub.onComplete()
             } else {
-                it.onError(Throwable("Failure update event ${event.id}"))
+                sub.onError(Throwable("Failure update event ${event.id}"))
             }
         } catch (e: Throwable) {
-            it.onError(e)
+            sub.onError(e)
         }
     }
 

@@ -12,18 +12,18 @@ title varchar(300) NOT NULL,
 thumbnail varchar(300) NOT NULL,
 content varchar NOT NULL,
 place varchar(300) NOT NULL,
-sales_start date NOT NULL,
-sales_end date NOT NULL,
 start_date date NOT NULL,
 end_date date NOT NULL
 );
 create table ticket(
 id SERIAL PRIMARY KEY,
 max int NOT NULL,
-event_id int REFERENCES event(id),
+event_id int REFERENCES event(id) ON DELETE CASCADE,
 name varchar(300) NOT NULL,
 description varchar(300) NOT NULL,
-price int NOT NULL
+price int NOT NULL,
+sales_start date NOT NULL,
+sales_end date NOT NULL
 );
 create table applicant(
 event_id int REFERENCES event(id),
