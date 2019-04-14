@@ -1,19 +1,17 @@
 package org.gdg.withgo.data.repository
 
-import io.reactivex.Single
 import org.gdg.withgo.data.model.event.Event
 import org.gdg.withgo.data.model.event.Ticket
 import org.gdg.withgo.data.repository.postgres.EventRepository
-import org.gdg.withgo.domain.TicketUsecase
+import org.gdg.withgo.data.repository.postgres.TicketRepository
 import org.junit.Assert
 import org.junit.Test
-import org.mockito.Mockito
 import java.util.*
 
 class EventRepositoryTest {
 
     @Test fun eventCRUDTest() {
-        val ticketRepository = Mockito.mock(TicketUsecase::class.java)
+        val ticketRepository = TicketRepository()
         val eventRepository = EventRepository(ticketRepository)
         val tickets = listOf(Ticket().apply {
             this.name = "테스트 티켓"
@@ -23,7 +21,6 @@ class EventRepositoryTest {
             this.saleStartDate = Date()
             this.saleEndDate = Date()
         })
-        Mockito.`when`(ticketRepository.getEventTickets(Mockito.anyInt())).thenReturn(Single.just(tickets))
         val event = Event().apply {
             this.title = "테스트 이벤트"
             this.content = "이벤트 내용"

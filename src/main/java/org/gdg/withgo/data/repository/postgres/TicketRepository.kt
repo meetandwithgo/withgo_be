@@ -8,14 +8,59 @@ import org.gdg.withgo.data.model.event.Ticket
 import org.gdg.withgo.data.repository.postgres.entity.TicketEntityMapper
 import org.gdg.withgo.domain.TicketUsecase
 import org.gdg.withgo.service.Postgresql
+import java.sql.Date
 
 class TicketRepository : TicketUsecase {
-    override fun addTickets(eventId: Int, tickets: List<Ticket>): Completable {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun addTickets(eventId: Int, tickets: List<Ticket>) = Completable.create {
+        if (tickets.isEmpty()) {
+            it.onComplete()
+        }
+        try {
+            val res = Postgresql.dsl().use { dsl ->
+                var query = dsl.insertInto(TICKET, TICKET.EVENT_ID, TICKET.NAME, TICKET.DESCRIPTION, TICKET.MAX, TICKET.PRICE, TICKET.SALES_START, TICKET.SALES_END)
+                tickets.forEach { query = query.values(eventId, it.name, it.description, it.max, it.price, Date(it.saleStartDate.time), Date(it.saleEndDate.time)) }
+                query.execute() == tickets.size
+            }
+            if (res) {
+                it.onComplete()
+            } else {
+                it.onError(Throwable("Failed add tickets to event"))
+            }
+        } catch (e: Throwable) {
+            it.onError(e)
+        }
     }
 
     override fun updateTickets(eventId: Int, tickets: List<Ticket>): Completable {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val recentTickets = tickets.filter { updateTicket(eventId, it).blockingGet() != null }
+        return this.addTickets(eventId, recentTickets)
+    }
+
+    override fun updateTicket(eventId: Int, ticket: Ticket) = Completable.create {
+        try {
+            val res = Postgresql.dsl().use { dsl ->
+                val count = dsl.selectFrom(TICKET).where(TICKET.ID.eq(ticket.id).and(TICKET.EVENT_ID.eq(eventId))).count()
+                if (count == 0) {
+                    false
+                }
+                dsl.update(TICKET)
+                        .set(TICKET.NAME, ticket.name)
+                        .set(TICKET.DESCRIPTION, ticket.description)
+                        .set(TICKET.MAX, ticket.max)
+                        .set(TICKET.PRICE, ticket.price)
+                        .set(TICKET.SALES_START, Date(ticket.saleStartDate.time))
+                        .set(TICKET.SALES_END, Date(ticket.saleEndDate.time))
+                        .where(TICKET.ID.eq(ticket.id).and(TICKET.EVENT_ID.eq(eventId)))
+                        .execute() > 0
+            }
+            if (res) {
+                it.onComplete()
+            } else {
+                it.onError(Throwable("Failed update ticket"))
+            }
+        } catch (e: Throwable) {
+            it.onError(e)
+        }
     }
 
     override fun applyEvent(eventId: Int, ticketId: Int): Completable {

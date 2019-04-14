@@ -67,7 +67,7 @@ class EventRepository(val ticketRepository: TicketUsecase = TicketRepository()) 
         }
     }
 
-    override fun addEvent(ownerId: Int, event: Event): Single<Int> = Single.create {
+    override fun addEvent(ownerId: Int, event: Event): Single<Int> = Single.create { sub ->
         try {
             val eventId = Postgresql.dsl().use { dsl ->
                 val eventId = dsl.insertInto(EVENT, EVENT.TITLE, EVENT.THUMBNAIL, EVENT.PLACE, EVENT.CONTENT, EVENT.START_DATE, EVENT.END_DATE, EVENT.OWNER_ID)
@@ -75,20 +75,24 @@ class EventRepository(val ticketRepository: TicketUsecase = TicketRepository()) 
                         .returningResult(EVENT.ID)
                         .fetchOne()
                         .get(EVENT.ID)
-                val query = dsl.insertInto(TICKET, TICKET.EVENT_ID, TICKET.NAME, TICKET.DESCRIPTION, TICKET.MAX, TICKET.PRICE)
-                event.tickets.forEach { query.values(eventId, it.name, it.description, it.max, it.price) }
                 eventId
             }
-            it.onSuccess(eventId)
+            eventId?.let {
+                ticketRepository.addTickets(it, event.tickets).blockingGet()?.let {
+                    this.deleteEvent(eventId)
+                    throw it
+                }
+                sub.onSuccess(eventId)
+            } ?: sub.onError(Throwable("Failed create event"))
         } catch (e: Throwable) {
-            it.onError(e)
+            sub.onError(e)
         }
     }
 
-    override fun updateEvent(event: Event) = Completable.create {
+    override fun updateEvent(event: Event) = Completable.create { sub ->
         try {
-            val res = Postgresql.dsl().use {
-                val res = it.update(EVENT)
+            val res = Postgresql.dsl().use { dsl ->
+                val res = dsl.update(EVENT)
                         .set(EVENT.TITLE, event.title)
                         .set(EVENT.THUMBNAIL, event.thumbnail)
                         .set(EVENT.PLACE, event.place)
@@ -99,12 +103,13 @@ class EventRepository(val ticketRepository: TicketUsecase = TicketRepository()) 
                 res > 0
             }
             if (res) {
-                it.onComplete()
+                ticketRepository.updateTickets(event.id, event.tickets).blockingGet()?.let { throw it }
+                sub.onComplete()
             } else {
-                it.onError(Throwable("Failure update event ${event.id}"))
+                sub.onError(Throwable("Failure update event ${event.id}"))
             }
         } catch (e: Throwable) {
-            it.onError(e)
+            sub.onError(e)
         }
     }
 
