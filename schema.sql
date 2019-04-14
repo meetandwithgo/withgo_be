@@ -18,7 +18,7 @@ end_date date NOT NULL
 create table ticket(
 id SERIAL PRIMARY KEY,
 max int NOT NULL,
-event_id int REFERENCES event(id),
+event_id int REFERENCES event(id) ON DELETE CASCADE,
 name varchar(300) NOT NULL,
 description varchar(300) NOT NULL,
 price int NOT NULL,
