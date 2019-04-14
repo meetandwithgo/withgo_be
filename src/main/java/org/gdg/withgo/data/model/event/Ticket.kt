@@ -1,7 +1,9 @@
 package org.gdg.withgo.data.model.event
 
-class Ticket(
-        val id: Int,
-        val name: String,
-        val price: Int
-)
+class Ticket {
+    var id: Int = -1
+    var name: String = ""
+    var description: String = ""
+    var max: Int = 0
+    var price: Int = 0
+}

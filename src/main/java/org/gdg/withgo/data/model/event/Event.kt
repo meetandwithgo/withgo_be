@@ -1,14 +1,13 @@
 package org.gdg.withgo.data.model.event
 
+import java.util.*
+import kotlin.collections.ArrayList
 
-class Event(
-        id: Int,
-        title: String,
-        thumbnail: String,
-        startDate: String,
-        owner: String,
-        val endDate: String,
-        val saleStartDate: String,
-        val saleEndDate: String,
-        val tickets: List<Ticket>
-) : SimpleEvent(id, title, thumbnail, startDate, owner)
+
+class Event: SimpleEvent() {
+    var content: String = ""
+    var endDate: Date = Date()
+    var saleStartDate: Date = Date()
+    var saleEndDate: Date = Date()
+    var tickets: List<Ticket> = ArrayList()
+}

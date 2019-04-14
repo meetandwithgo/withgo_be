@@ -5,19 +5,11 @@ email varchar(300) UNIQUE,
 phone varchar(300) UNIQUE,
 password varchar(300) NOT NULL
 );
-create table organization(
-id SERIAL PRIMARY KEY,
-name varchar(300) NOT NULL
-);
-create table organization_member(
-user_id int NOT NULL REFERENCES account(id),
-org_id int NOT NULL REFERENCES organization(id),
-PRIMARY KEY (org_id, user_id)
-)
 create table event(
 id SERIAL PRIMARY KEY,
-org_id int NOT NULL REFERENCES organization(id),
+owner_id int NOT NULL REFERENCES account(id),
 title varchar(300) NOT NULL,
+thumbnail varchar(300) NOT NULL,
 content varchar NOT NULL,
 sales_start date NOT NULL,
 sales_end date NOT NULL,
@@ -38,3 +30,16 @@ ticket_id int REFERENCES ticket(id),
 user_id int REFERENCES account(id),
 PRIMARY KEY (event_id, user_id)
 );
+
+
+
+
+create table organization(
+id SERIAL PRIMARY KEY,
+name varchar(300) NOT NULL
+);
+create table organization_member(
+user_id int NOT NULL REFERENCES account(id),
+org_id int NOT NULL REFERENCES organization(id),
+PRIMARY KEY (org_id, user_id)
+)

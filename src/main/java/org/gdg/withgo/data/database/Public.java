@@ -13,8 +13,6 @@ import javax.annotation.Generated;
 import org.gdg.withgo.data.database.tables.Account;
 import org.gdg.withgo.data.database.tables.Applicant;
 import org.gdg.withgo.data.database.tables.Event;
-import org.gdg.withgo.data.database.tables.Organization;
-import org.gdg.withgo.data.database.tables.OrganizationMember;
 import org.gdg.withgo.data.database.tables.Ticket;
 import org.jooq.Catalog;
 import org.jooq.Sequence;
@@ -35,7 +33,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Public extends SchemaImpl {
 
-    private static final long serialVersionUID = -1857993526;
+    private static final long serialVersionUID = 1862666999;
 
     /**
      * The reference instance of <code>public</code>
@@ -56,16 +54,6 @@ public class Public extends SchemaImpl {
      * The table <code>public.event</code>.
      */
     public final Event EVENT = org.gdg.withgo.data.database.tables.Event.EVENT;
-
-    /**
-     * The table <code>public.organization</code>.
-     */
-    public final Organization ORGANIZATION = org.gdg.withgo.data.database.tables.Organization.ORGANIZATION;
-
-    /**
-     * The table <code>public.organization_member</code>.
-     */
-    public final OrganizationMember ORGANIZATION_MEMBER = org.gdg.withgo.data.database.tables.OrganizationMember.ORGANIZATION_MEMBER;
 
     /**
      * The table <code>public.ticket</code>.
@@ -99,7 +87,6 @@ public class Public extends SchemaImpl {
         return Arrays.<Sequence<?>>asList(
             Sequences.ACCOUNT_ID_SEQ,
             Sequences.EVENT_ID_SEQ,
-            Sequences.ORGANIZATION_ID_SEQ,
             Sequences.TICKET_ID_SEQ);
     }
 
@@ -115,8 +102,6 @@ public class Public extends SchemaImpl {
             Account.ACCOUNT,
             Applicant.APPLICANT,
             Event.EVENT,
-            Organization.ORGANIZATION,
-            OrganizationMember.ORGANIZATION_MEMBER,
             Ticket.TICKET);
     }
 }

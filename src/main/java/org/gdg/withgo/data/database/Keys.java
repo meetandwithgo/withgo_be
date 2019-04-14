@@ -9,14 +9,10 @@ import javax.annotation.Generated;
 import org.gdg.withgo.data.database.tables.Account;
 import org.gdg.withgo.data.database.tables.Applicant;
 import org.gdg.withgo.data.database.tables.Event;
-import org.gdg.withgo.data.database.tables.Organization;
-import org.gdg.withgo.data.database.tables.OrganizationMember;
 import org.gdg.withgo.data.database.tables.Ticket;
 import org.gdg.withgo.data.database.tables.records.AccountRecord;
 import org.gdg.withgo.data.database.tables.records.ApplicantRecord;
 import org.gdg.withgo.data.database.tables.records.EventRecord;
-import org.gdg.withgo.data.database.tables.records.OrganizationMemberRecord;
-import org.gdg.withgo.data.database.tables.records.OrganizationRecord;
 import org.gdg.withgo.data.database.tables.records.TicketRecord;
 import org.jooq.ForeignKey;
 import org.jooq.Identity;
@@ -44,7 +40,6 @@ public class Keys {
 
     public static final Identity<AccountRecord, Integer> IDENTITY_ACCOUNT = Identities0.IDENTITY_ACCOUNT;
     public static final Identity<EventRecord, Integer> IDENTITY_EVENT = Identities0.IDENTITY_EVENT;
-    public static final Identity<OrganizationRecord, Integer> IDENTITY_ORGANIZATION = Identities0.IDENTITY_ORGANIZATION;
     public static final Identity<TicketRecord, Integer> IDENTITY_TICKET = Identities0.IDENTITY_TICKET;
 
     // -------------------------------------------------------------------------
@@ -57,8 +52,6 @@ public class Keys {
     public static final UniqueKey<AccountRecord> ACCOUNT_PHONE_KEY = UniqueKeys0.ACCOUNT_PHONE_KEY;
     public static final UniqueKey<ApplicantRecord> APPLICANT_PKEY = UniqueKeys0.APPLICANT_PKEY;
     public static final UniqueKey<EventRecord> EVENT_PKEY = UniqueKeys0.EVENT_PKEY;
-    public static final UniqueKey<OrganizationRecord> ORGANIZATION_PKEY = UniqueKeys0.ORGANIZATION_PKEY;
-    public static final UniqueKey<OrganizationMemberRecord> ORGANIZATION_MEMBER_PKEY = UniqueKeys0.ORGANIZATION_MEMBER_PKEY;
     public static final UniqueKey<TicketRecord> TICKET_PKEY = UniqueKeys0.TICKET_PKEY;
 
     // -------------------------------------------------------------------------
@@ -68,9 +61,7 @@ public class Keys {
     public static final ForeignKey<ApplicantRecord, EventRecord> APPLICANT__APPLICANT_EVENT_ID_FKEY = ForeignKeys0.APPLICANT__APPLICANT_EVENT_ID_FKEY;
     public static final ForeignKey<ApplicantRecord, TicketRecord> APPLICANT__APPLICANT_TICKET_ID_FKEY = ForeignKeys0.APPLICANT__APPLICANT_TICKET_ID_FKEY;
     public static final ForeignKey<ApplicantRecord, AccountRecord> APPLICANT__APPLICANT_USER_ID_FKEY = ForeignKeys0.APPLICANT__APPLICANT_USER_ID_FKEY;
-    public static final ForeignKey<EventRecord, OrganizationRecord> EVENT__EVENT_ORG_ID_FKEY = ForeignKeys0.EVENT__EVENT_ORG_ID_FKEY;
-    public static final ForeignKey<OrganizationMemberRecord, AccountRecord> ORGANIZATION_MEMBER__ORGANIZATION_MEMBER_USER_ID_FKEY = ForeignKeys0.ORGANIZATION_MEMBER__ORGANIZATION_MEMBER_USER_ID_FKEY;
-    public static final ForeignKey<OrganizationMemberRecord, OrganizationRecord> ORGANIZATION_MEMBER__ORGANIZATION_MEMBER_ORG_ID_FKEY = ForeignKeys0.ORGANIZATION_MEMBER__ORGANIZATION_MEMBER_ORG_ID_FKEY;
+    public static final ForeignKey<EventRecord, AccountRecord> EVENT__EVENT_OWNER_ID_FKEY = ForeignKeys0.EVENT__EVENT_OWNER_ID_FKEY;
     public static final ForeignKey<TicketRecord, EventRecord> TICKET__TICKET_EVENT_ID_FKEY = ForeignKeys0.TICKET__TICKET_EVENT_ID_FKEY;
 
     // -------------------------------------------------------------------------
@@ -80,7 +71,6 @@ public class Keys {
     private static class Identities0 {
         public static Identity<AccountRecord, Integer> IDENTITY_ACCOUNT = Internal.createIdentity(Account.ACCOUNT, Account.ACCOUNT.ID);
         public static Identity<EventRecord, Integer> IDENTITY_EVENT = Internal.createIdentity(Event.EVENT, Event.EVENT.ID);
-        public static Identity<OrganizationRecord, Integer> IDENTITY_ORGANIZATION = Internal.createIdentity(Organization.ORGANIZATION, Organization.ORGANIZATION.ID);
         public static Identity<TicketRecord, Integer> IDENTITY_TICKET = Internal.createIdentity(Ticket.TICKET, Ticket.TICKET.ID);
     }
 
@@ -91,8 +81,6 @@ public class Keys {
         public static final UniqueKey<AccountRecord> ACCOUNT_PHONE_KEY = Internal.createUniqueKey(Account.ACCOUNT, "account_phone_key", Account.ACCOUNT.PHONE);
         public static final UniqueKey<ApplicantRecord> APPLICANT_PKEY = Internal.createUniqueKey(Applicant.APPLICANT, "applicant_pkey", Applicant.APPLICANT.EVENT_ID, Applicant.APPLICANT.USER_ID);
         public static final UniqueKey<EventRecord> EVENT_PKEY = Internal.createUniqueKey(Event.EVENT, "event_pkey", Event.EVENT.ID);
-        public static final UniqueKey<OrganizationRecord> ORGANIZATION_PKEY = Internal.createUniqueKey(Organization.ORGANIZATION, "organization_pkey", Organization.ORGANIZATION.ID);
-        public static final UniqueKey<OrganizationMemberRecord> ORGANIZATION_MEMBER_PKEY = Internal.createUniqueKey(OrganizationMember.ORGANIZATION_MEMBER, "organization_member_pkey", OrganizationMember.ORGANIZATION_MEMBER.ORG_ID, OrganizationMember.ORGANIZATION_MEMBER.USER_ID);
         public static final UniqueKey<TicketRecord> TICKET_PKEY = Internal.createUniqueKey(Ticket.TICKET, "ticket_pkey", Ticket.TICKET.ID);
     }
 
@@ -100,9 +88,7 @@ public class Keys {
         public static final ForeignKey<ApplicantRecord, EventRecord> APPLICANT__APPLICANT_EVENT_ID_FKEY = Internal.createForeignKey(org.gdg.withgo.data.database.Keys.EVENT_PKEY, Applicant.APPLICANT, "applicant__applicant_event_id_fkey", Applicant.APPLICANT.EVENT_ID);
         public static final ForeignKey<ApplicantRecord, TicketRecord> APPLICANT__APPLICANT_TICKET_ID_FKEY = Internal.createForeignKey(org.gdg.withgo.data.database.Keys.TICKET_PKEY, Applicant.APPLICANT, "applicant__applicant_ticket_id_fkey", Applicant.APPLICANT.TICKET_ID);
         public static final ForeignKey<ApplicantRecord, AccountRecord> APPLICANT__APPLICANT_USER_ID_FKEY = Internal.createForeignKey(org.gdg.withgo.data.database.Keys.ACCOUNT_PKEY, Applicant.APPLICANT, "applicant__applicant_user_id_fkey", Applicant.APPLICANT.USER_ID);
-        public static final ForeignKey<EventRecord, OrganizationRecord> EVENT__EVENT_ORG_ID_FKEY = Internal.createForeignKey(org.gdg.withgo.data.database.Keys.ORGANIZATION_PKEY, Event.EVENT, "event__event_org_id_fkey", Event.EVENT.ORG_ID);
-        public static final ForeignKey<OrganizationMemberRecord, AccountRecord> ORGANIZATION_MEMBER__ORGANIZATION_MEMBER_USER_ID_FKEY = Internal.createForeignKey(org.gdg.withgo.data.database.Keys.ACCOUNT_PKEY, OrganizationMember.ORGANIZATION_MEMBER, "organization_member__organization_member_user_id_fkey", OrganizationMember.ORGANIZATION_MEMBER.USER_ID);
-        public static final ForeignKey<OrganizationMemberRecord, OrganizationRecord> ORGANIZATION_MEMBER__ORGANIZATION_MEMBER_ORG_ID_FKEY = Internal.createForeignKey(org.gdg.withgo.data.database.Keys.ORGANIZATION_PKEY, OrganizationMember.ORGANIZATION_MEMBER, "organization_member__organization_member_org_id_fkey", OrganizationMember.ORGANIZATION_MEMBER.ORG_ID);
+        public static final ForeignKey<EventRecord, AccountRecord> EVENT__EVENT_OWNER_ID_FKEY = Internal.createForeignKey(org.gdg.withgo.data.database.Keys.ACCOUNT_PKEY, Event.EVENT, "event__event_owner_id_fkey", Event.EVENT.OWNER_ID);
         public static final ForeignKey<TicketRecord, EventRecord> TICKET__TICKET_EVENT_ID_FKEY = Internal.createForeignKey(org.gdg.withgo.data.database.Keys.EVENT_PKEY, Ticket.TICKET, "ticket__ticket_event_id_fkey", Ticket.TICKET.EVENT_ID);
     }
 }

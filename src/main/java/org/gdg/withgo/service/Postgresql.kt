@@ -1,5 +1,6 @@
 package org.gdg.withgo.service
 
+import org.jooq.impl.DSL
 import java.sql.Connection
 import java.sql.DriverManager
 import java.sql.SQLException
@@ -16,4 +17,6 @@ object Postgresql {
         val url = "jdbc:postgresql://$dbHost:$dbPort/$dbName"
         return DriverManager.getConnection(url, dbUser, dbPassword)
     }
+
+    fun dsl() = DSL.using(create())
 }

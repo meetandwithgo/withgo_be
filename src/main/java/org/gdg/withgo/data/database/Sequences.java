@@ -34,11 +34,6 @@ public class Sequences {
     public static final Sequence<Long> EVENT_ID_SEQ = new SequenceImpl<Long>("event_id_seq", Public.PUBLIC, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
 
     /**
-     * The sequence <code>public.organization_id_seq</code>
-     */
-    public static final Sequence<Long> ORGANIZATION_ID_SEQ = new SequenceImpl<Long>("organization_id_seq", Public.PUBLIC, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
-
-    /**
      * The sequence <code>public.ticket_id_seq</code>
      */
     public static final Sequence<Long> TICKET_ID_SEQ = new SequenceImpl<Long>("ticket_id_seq", Public.PUBLIC, org.jooq.impl.SQLDataType.BIGINT.nullable(false));

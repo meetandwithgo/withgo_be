@@ -2,28 +2,32 @@ package org.gdg.withgo.data.repository.postgres
 
 import io.reactivex.Completable
 import io.reactivex.Single
+import org.gdg.withgo.data.database.tables.Account.*
 import org.gdg.withgo.domain.AuthUsecase
 import org.gdg.withgo.service.Postgresql
 import java.sql.SQLException
 
 class AuthRepository : AuthUsecase {
     override fun checkExists(email: String, phone: String): Single<Boolean> = Single.create {
-        try {
-            Postgresql.create().use { connection ->
-                val stmt = connection.prepareStatement("select count(*) from account where phone=? OR email=?")
-                stmt.setString(1, phone)
-                stmt.setString(2, email)
-                val resultSet = stmt.executeQuery()
-                if (resultSet.next()) {
-                    val count = resultSet.getInt(1)
-                    it.onSuccess(count > 0)
-                } else {
-                    it.onError(Throwable("sql query error"))
-                }
-            }
-        } catch (e: SQLException) {
-            it.onError(e)
-        }
+//        try {
+////            Postgresql.dsl().use { ctx ->
+////                ctx.selectFrom(ACCOUNT).where(ACCOUNT.EMAIL.eq(email).and(ACCOUNT.PHONE.))
+////            }
+////            Postgresql.create().use { connection ->
+////                val stmt = connection.prepareStatement("select count(*) from account where phone=? OR email=?")
+////                stmt.setString(1, phone)
+////                stmt.setString(2, email)
+////                val resultSet = stmt.executeQuery()
+////                if (resultSet.next()) {
+////                    val count = resultSet.getInt(1)
+////                    it.onSuccess(count > 0)
+////                } else {
+////                    it.onError(Throwable("sql query error"))
+////                }
+////            }
+////        } catch (e: SQLException) {
+////            it.onError(e)
+////        }
     }
 
     override fun register(email: String, name: String, password: String, phone: String) = Completable.create {
@@ -77,8 +81,7 @@ class AuthRepository : AuthUsecase {
     }
 
     override fun unregister(email: String) = Completable.create {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-
+//
     }
 
     override fun modifyName(email: String, name: String) = Completable.create {

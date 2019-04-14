@@ -9,8 +9,6 @@ import javax.annotation.Generated;
 import org.gdg.withgo.data.database.tables.Account;
 import org.gdg.withgo.data.database.tables.Applicant;
 import org.gdg.withgo.data.database.tables.Event;
-import org.gdg.withgo.data.database.tables.Organization;
-import org.gdg.withgo.data.database.tables.OrganizationMember;
 import org.gdg.withgo.data.database.tables.Ticket;
 
 
@@ -41,16 +39,6 @@ public class Tables {
      * The table <code>public.event</code>.
      */
     public static final Event EVENT = org.gdg.withgo.data.database.tables.Event.EVENT;
-
-    /**
-     * The table <code>public.organization</code>.
-     */
-    public static final Organization ORGANIZATION = org.gdg.withgo.data.database.tables.Organization.ORGANIZATION;
-
-    /**
-     * The table <code>public.organization_member</code>.
-     */
-    public static final OrganizationMember ORGANIZATION_MEMBER = org.gdg.withgo.data.database.tables.OrganizationMember.ORGANIZATION_MEMBER;
 
     /**
      * The table <code>public.ticket</code>.

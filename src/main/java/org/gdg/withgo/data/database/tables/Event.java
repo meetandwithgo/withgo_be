@@ -41,7 +41,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Event extends TableImpl<EventRecord> {
 
-    private static final long serialVersionUID = -1087534508;
+    private static final long serialVersionUID = -452667571;
 
     /**
      * The reference instance of <code>public.event</code>
@@ -62,14 +62,19 @@ public class Event extends TableImpl<EventRecord> {
     public final TableField<EventRecord, Integer> ID = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.field("nextval('event_id_seq'::regclass)", org.jooq.impl.SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>public.event.org_id</code>.
+     * The column <code>public.event.owner_id</code>.
      */
-    public final TableField<EventRecord, Integer> ORG_ID = createField("org_id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<EventRecord, Integer> OWNER_ID = createField("owner_id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
      * The column <code>public.event.title</code>.
      */
     public final TableField<EventRecord, String> TITLE = createField("title", org.jooq.impl.SQLDataType.VARCHAR(300).nullable(false), this, "");
+
+    /**
+     * The column <code>public.event.thumbnail</code>.
+     */
+    public final TableField<EventRecord, String> THUMBNAIL = createField("thumbnail", org.jooq.impl.SQLDataType.VARCHAR(300).nullable(false), this, "");
 
     /**
      * The column <code>public.event.content</code>.
@@ -174,11 +179,11 @@ public class Event extends TableImpl<EventRecord> {
      */
     @Override
     public List<ForeignKey<EventRecord, ?>> getReferences() {
-        return Arrays.<ForeignKey<EventRecord, ?>>asList(Keys.EVENT__EVENT_ORG_ID_FKEY);
+        return Arrays.<ForeignKey<EventRecord, ?>>asList(Keys.EVENT__EVENT_OWNER_ID_FKEY);
     }
 
-    public Organization organization() {
-        return new Organization(this, Keys.EVENT__EVENT_ORG_ID_FKEY);
+    public Account account() {
+        return new Account(this, Keys.EVENT__EVENT_OWNER_ID_FKEY);
     }
 
     /**
