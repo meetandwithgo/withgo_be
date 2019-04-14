@@ -29,7 +29,10 @@ class EventRepository(val ticketRepository: TicketUsecase = TicketRepository()) 
     override fun loadEvents(page: Int, count: Int): Single<List<Event>> = Single.create {
         try {
             val events = Postgresql.dsl().use { dsl ->
-                dsl.selectFrom(EVENT.join(ACCOUNT).on(EVENT.OWNER_ID.eq(ACCOUNT.ID))).fetch()
+                dsl.selectFrom(EVENT.join(ACCOUNT).on(EVENT.OWNER_ID.eq(ACCOUNT.ID)))
+                        .offset(page * count)
+                        .limit(count)
+                        .fetch()
                         .map { record -> EventEntityMapper.fromRecord(record) }
             }
             it.onSuccess(events)
